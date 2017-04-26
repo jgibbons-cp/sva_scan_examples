@@ -3,7 +3,6 @@ from flake8.api import legacy as f8
 import re
 
 code_directory = os.path.abspath(os.path.dirname(__file__))
-unit_test_directory = os.path.join(code_directory, '../unit')
 lib_directory = os.path.join(code_directory, '../../sva_scan_examples/')
 base_directory = os.path.join(code_directory, '../../')
 
@@ -27,7 +26,7 @@ def get_all_py_files(directory):
 
 class TestF8:
     def test_f8(self):
-        dirs_to_test = [code_directory, unit_test_directory, lib_directory,
+        dirs_to_test = [code_directory, lib_directory,
                         base_directory]
         files_to_test = []
         for d in dirs_to_test:

@@ -27,7 +27,7 @@ Dependencies
 gitpython - execute the following command to get the module:
 
 sudo pip install gitpython  
-
+sudo pup install json2html  
 
 Project Configuration
 ---------------------
@@ -41,6 +41,14 @@ Project Execution
 -----------------
 
 In the project root type the following command: python app/runner.py
+
+Sample output:  
+
+$ python app/runner.py
+Command status is queued... waiting for next heartbeat...
+Command status is queued... waiting for next heartbeat...
+
+Completed scans on host.  To look at the scan results in the portal search for hostname ip-10-10-12-239.  To look at the results in JSON and HTML look at the reports in /tmp/scan_results/  
 
 Project Classes
 ---------------
@@ -57,20 +65,21 @@ A) Get a server IP
 B) Get the Halo ID  
 C) Do a scan  
 D) Get the results  
-E) Write the results to a file (see 
-
-NOTE: If you want to look at the scan results in the portal get the value from
-the json "server_hostname":  Then in the portal click on the root group, Scans
-and look for the latest scan for that Server.
+E) Write the results to a JSON file (see sva_scan_results_1493240247.json)  
+F) Write the results to an HTML file (see sva_report_1493240247.html)  
+G) Get the first findings detail - note this is no different than in the finding
+section of the the scan results  
+H) Write the results to a JSON file (see sva_finding_results_1493240247.json)    
+I) Write the results to an HTML file (see sva_finding_report_1493240247.html)  
+J) Get the scan details - for an SVA scan these are the same as the scan results  
+K) Write the results to a JSON file (see sva_scan_details_1493240247.json)  
+L) Write the results to an HTML file (see sva_details_report_1493240247.html)  
 
 
 Tests
 -----
 
-1) Unit
-
-
-2) Style
+1) Style
 
 A) pep8 checking - localtion: location: sva_scan_examples/app/test/style/test_style_flake8.py
 

@@ -3,7 +3,7 @@ import os
 import stat
 import sys
 import json
-from json2html import *
+from json2html import * # NOQA
 import time
 
 
@@ -22,6 +22,9 @@ class SVA_ScanExamples(object):
         self.halo_sva_scan_examples()
 
     def halo_sva_scan_examples(self):
+        HOSTNAME = "hostname"
+        NEWLINE = "\n"
+        reports_dir = os.getenv("SCAN_RESULTS_DIRECTORY")
 
         # get the IP of a server to scan
         server_ip = self.get_a_server_ip(self.halo)
@@ -53,7 +56,8 @@ class SVA_ScanExamples(object):
         finding_detail = self.get_scan_finding(scan_results)
 
         file_name = "sva_finding_results"
-        self.write_json_to_file(finding_detail, file_name, secs_since_cur_epoch)
+        self.write_json_to_file(finding_detail, file_name,
+                                secs_since_cur_epoch)
 
         file_name = "sva_finding_report"
         self.write_scan_report(finding_detail, file_name, secs_since_cur_epoch)
@@ -67,6 +71,10 @@ class SVA_ScanExamples(object):
         file_name = "sva_details_report"
         self.write_scan_report(scan_details, file_name, secs_since_cur_epoch)
 
+        print "%sCompleted scans on host.  To look at the scan results" \
+              " in the portal search for hostname %s.  To look at the " \
+              "results in JSON and HTML look at the reports in %s%s" \
+              % (NEWLINE, scan_results[HOSTNAME], reports_dir, NEWLINE)
     ###
     #
     #   Create a directory to store the scan results if it does not exist
@@ -145,7 +153,8 @@ class SVA_ScanExamples(object):
     def scan_server(self, server_id):
         scan_type = "sva"
 
-        response = self.halo.scan_server(self.halo_scan_obj, server_id, scan_type)
+        response = self.halo.scan_server(self.halo_scan_obj, server_id,
+                                         scan_type)
 
         self.halo.process_api_request(server_id, response)
 
@@ -209,7 +218,7 @@ class SVA_ScanExamples(object):
     def write_scan_report(cls, json_data, file_name, secs_since_cur_epoch):
         file_path = os.getenv("SCAN_RESULTS_DIRECTORY")
 
-        scan_data_html = json2html.convert(json=json_data)
+        scan_data_html = json2html.convert(json=json_data) # NOQA
 
         scan_report = "%s%s_%s.html" % (file_path, file_name,
                                         secs_since_cur_epoch)
@@ -264,4 +273,3 @@ class SVA_ScanExamples(object):
                                                   scan_results[SCAN][ID])
 
         return scan_details
-
