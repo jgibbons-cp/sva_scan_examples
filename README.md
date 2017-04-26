@@ -1,4 +1,4 @@
-The project shows a SVA API examples using the Halo Python SDK
+The project shows SVA API examples using the Halo Python SDK
 
 API Setup
 ---------
