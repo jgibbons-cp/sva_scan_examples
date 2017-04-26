@@ -24,7 +24,7 @@ export HALO_API_HOSTNAME=api.cloudpassage.com
 Dependencies
 ------------
 
-gitpython - execute the following command to get the module:
+gitpython and json2html - execute the following commands to get the module:
 
 sudo pip install gitpython  
 sudo pup install json2html  
