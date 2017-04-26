@@ -32,8 +32,11 @@ sudo pip install gitpython
 Project Configuration
 ---------------------
 
-app/sva_scan_examples/config_helper.py stores the configuration for the project.
-
+app/sva_scan_examples/config_helper.py stores the configuration for the project.  
+  
+1) SCAN_RESULTS_DIRECTORY: an environment variable that controls where the scan results are stored.
+  The default is /tmp/scan_results/
+   
 Project Execution
 -----------------
 
@@ -54,7 +57,7 @@ A) Get a server IP
 B) Get the Halo ID  
 C) Do a scan  
 D) Get the results  
-E) Print them (see sample_json.json)
+E) Write the results to a file (see 
 
 NOTE: If you want to look at the scan results in the portal get the value from
 the json "server_hostname":  Then in the portal click on the root group, Scans
