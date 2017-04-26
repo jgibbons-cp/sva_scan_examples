@@ -56,6 +56,10 @@ C) Do a scan
 D) Get the results  
 E) Print them (see sample_json.json)
 
+NOTE: If you want to look at the scan results in the portal get the value from
+the json "server_hostname":  Then in the portal click on the root group, Scans
+and look for the latest scan for that Server.
+
 
 Tests
 -----
