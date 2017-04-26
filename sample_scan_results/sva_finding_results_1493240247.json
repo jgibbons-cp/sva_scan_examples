@@ -1,0 +1,31 @@
+{
+    "status": "bad", 
+    "package_name": "kernel-tools.x86_64", 
+    "url": "https://api.cloudpassage.com/v1/scans/ce12b2be2ac211e7880e317926a1a138/findings/e52fe3a42ac211e7b82d158984660369", 
+    "package_version": "4.4.51-40.58.amzn1", 
+    "cpe": "not_found", 
+    "critical": true, 
+    "cve_entries": [
+        {
+            "cve_entry": "CVE-2017-7184", 
+            "cvss_score": 7.2, 
+            "suppressed": false
+        }, 
+        {
+            "cve_entry": "CVE-2017-6347", 
+            "cvss_score": 7.2, 
+            "suppressed": false
+        }, 
+        {
+            "cve_entry": "CVE-2017-6353", 
+            "cvss_score": 4.9, 
+            "suppressed": false
+        }, 
+        {
+            "cve_entry": "CVE-2017-5669", 
+            "cvss_score": 4.6, 
+            "suppressed": false
+        }
+    ], 
+    "id": "e52fe3a42ac211e7b82d158984660369"
+}
