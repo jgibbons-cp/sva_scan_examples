@@ -11,3 +11,5 @@ class ConfigHelper():
         self.halo_secret = os.getenv("HALO_API_SECRET_KEY")
 
         os.environ["SCAN_RESULTS_DIRECTORY"] = "/tmp/scan_results/"
+        os.environ["DAYS_FOR_SCAN_AGE"] = "0"
+        os.environ["SCAN_EXAMPLES"] = "False"
