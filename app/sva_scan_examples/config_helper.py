@@ -10,7 +10,6 @@ class ConfigHelper():
         TRUE = "True"
         FALSE = "False"
         ERROR = 1
-        mode = "w"
 
         self.halo_key = os.getenv("HALO_API_KEY")
         self.halo_secret = os.getenv("HALO_API_SECRET_KEY")
