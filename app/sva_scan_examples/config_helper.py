@@ -22,7 +22,7 @@ class ConfigHelper():
             os.mkdir(scan_results_directory)
             path_exists = os.path.exists(scan_results_directory)
 
-        days_for_scan_age = os.environ["DAYS_FOR_SCAN_AGE"] = "0"
+        days_for_scan_age = os.environ["DAYS_FOR_SCAN_AGE"] = "e"
         days_for_scan_age = int(days_for_scan_age)
         string_is_int_value = isinstance(days_for_scan_age, int)
 
