@@ -1,70 +1,19 @@
 language: python
-
 sudo: required
-
 python:
-  - "2.7"
-
+- '2.7'
 cache: pip
 install:
-  # - sudo apt-get install dnsutils
-  - pip install cloudpassage
-  - pip install flake8
+- pip install cloudpassage
+- pip install flake8
 script:
-  # install the Halo agent
-  # update apt repositories 
-  # - sudo apt-get update > /dev/null
-  
-  # install curl 
-  # - sudo apt-get -y install curl
-  
-  # add CloudPassage repository 
-  # - echo 'deb https://production.packages.cloudpassage.com/debian debian main' | sudo tee /etc/apt/sources.list.d/cloudpassage.list > /dev/null
-  
-  # import CloudPassage public key 
-  # - curl https://production.packages.cloudpassage.com/cloudpassage.packages.key | sudo apt-key add -
-  
-  # update apt repositories 
-  # - sudo apt-get update > /dev/null
-  
-  # install the agent 
-  # - sudo apt-get -y install cphalo
-  
-  # configure agent key
-  # - sudo /opt/cloudpassage/bin/configure --agent-key=$HALO_AGENT_KEY
-  
-  #  start the agent for the first time 
-  - sudo /etc/init.d/cphalod start
-  
-  # pull down Halo API wrapper class
-  # - git clone https://github.com/jgibbons-cp/halo_general.git
-  
-  # run style test
-  - cd app/test/style/
-  - python test_style_flake8.py
-
-  # run unit tests
-  - cd ../unit/
-  - python test_config_helper.py
-  
-  # configure project
-  #- sed -i -e "1,/<server_group>/s/<server_group>/UnitTest/" ../../halo_api_examples/config_helper.py
-
-  #- sed -i -e "1,/<server_group_temp>/s/<server_group_temp>/UnitTestTemp/" ../../halo_api_examples/config_helper.py
-
-  # get build workload ip
-  #- server_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
-  #- sed -i -e "1,/<server_ip>/s/<server_ip>/$server_ip/" ../../halo_api_examples/config_helper.py
-
-  #- python test_server_group_methods.py
-
-  #- python test_server_methods.py
-
+- sudo /etc/init.d/cphalod start
+- cd app/test/style/
+- python test_style_flake8.py
+- cd ../unit/
+- python test_config_helper.py
 env:
-  global:
-  # halo
-  - secure: "BOgUHEmdFNHMuf+kdQ+N783SyQkuIKIcgB+HxLOskCkqkuEGqZ7FFZtONMxDolVm9hk5VgrNJLAdP68OuOyrQgrc5dQHzasbOAbz7MkoAxqWmMnIOJhP2SnA5WTONXGlp9u/ES5fPPBhvxCS2q1oOpZ2YP7ZMl9AHqX7p+4OH/VoRGxrysx9h7Da6JYFIuwr+F7iDY+ImPySGtksEdaHIGiLafj0FcKfWMEYW1fDelLT9M1ZJf33RKM8fk86NKBdJQiRA0zt0ENGkUs950P2sLQsSwzpuNw5SF6f7jYXfKezf1lND4LevMi38fWqPNbc//iVu7VZoG+mj9dYnwffIpy5tLPXgLQOSoOIUkE5ivdYkl3evVKALaSqU1X+846MVP51JHZfQN5P6mLMxJQBGrdIHV+m2QXFIh7k1PtFJnpQK46dcmPQYAuDeyMGYdq7CCv9n0xW7+7cQkMKwz9anFEXqKwFggs+99y85p+o+/Og1wC7bWY+jvLJ7G/fqxPsekkN52PciG/c8n7RSY/nGWlnpnG45Oi80GeXpxvMneyWvZgETTzKRHSRd7bu+B1vNFaBB8Zx3ZudfxynG0P10zBGLfLqRVjDZ0AOSxCvJQY7QJewU85N+XerqQjZMUVYMlimoar0ikVgYpyKn0ojxWRJcKxXVVegH/dLyCQD7CI="
-  # halo secret
-  - secure: "RZGLPgM3MuIvosOjxDKHCNQ10X67UpAQc2Oppn0weZNFgyKvlkX5k6fNWkEoHB6Zs9geWAOxWuKrWDnMqWbDUcLv+KMwC5KMqzX7k4syYk5smKmhjW/XHmqyiBVjNUtefSYf+Eg7vTWoHeV2rdozMSoRTD5gjXsgAT2pON4FI1mhJyG4bawVHXEPdQP/pr7Sqi7XlHFCkGxwZfZuFeMCQpNmnz+efAYl0x+HDp0099ybooKdo+F6un4NKqedLiPRw3WFPwQZ7NDxiNCs/w5q0Qg7PHjd/5ywXoW2MPpA7TJnyH83JKNgTFYQOeA3BwowePdeie2UuFJQ/5JbuCDMlxMEBmKMVt4/ih94UZP+5Eh9j3AArTpryFfQmuobOHGJCuVMe3ZdqpTl87Qk5uek78HQFH5aVllCXt4ZS0cpTrU4rUwnpAZBFfs/BkwKpCYG8sINX5Cldsh+TKPGrXqIQ79HJVb1qXaIkXHPiyc3i0MCosueGvEtAJNV7vai3nTYUKWcGrtEIzHNzPCJr5cDPgOtkuR5/YO8Xag0QsR4VoeVt23UqvttgTHPrf8SomFnKsC+Dy7BJenKLWE5Xdze25CxyPqm/E3wI8BitxH4TTFDsZPgx9atgqgUvzEFepVu3yK0h6zt28GW4snrBaY6fo1gwYSQLWs+OqhxRN+47T8="
-  # halo agent
-  - secure: "Gvofx1KuPHRXprFmRlLQweH8ZN0NL7UsUpI0t3qnCzVVGs3DEu1f8Vs+ZhxjMF47Gb/49AZFDKXWqkghFjVaJXuHy0KrZjPnXJme3rGQYvtDshwV1uJ/LRkvtyzJs1Dp4aRHzCEvxI2JZYdlKsuk8xM6E4XYAM5r5B3OA+GXzdbBwxn/ymsI3pjFIsv/11I+0SI+a7nJTZBYnf4OzTCqd4XN21vk15cQ+bf4ePvsT0PtrZ51evNT0Z0PBw8hzIJrsUb3/7cfyf+n+wgy2vIDu5beOq08k3ZOIbizv6FsktlfUnodTx0aAbbGwxm1kHxfY0kZ2Gr1P3KzNj/6JpzcyLORfUxaGzVJIrL5SFB0b19yUlAoW6OPnAaWxSOzhGcoKGn5SeXZ3FVOXTsq3h+4Izb3+mRuXTi6UdPAY0EddxO4fKu7Fopujb/a4QWcBfNqMBLjxWwp/xAZOkfJHTIPYJKWdA/4XqHa3sj5GS7YjjepzAIIml0WqKEniQvS84iKkbZhS3Q/jWIi3yhXVfVmcjbK16U/O2k7GIQkgA5RMtM5Qa+tHgEkXnRalWxt4n1UHN9uyFpyNMCQONg5gyZNBIuURF9KUFQKMufvRM39iwxd9JvC51l1wbuTzUOzDz0hw6NUUA0PX+TQhcFEtmjGVV5b//u+h0iAsI9+0WhhXIQ="
+  global: 
+  matrix:
+  - secure: NL3bAJXDosr4bbr3/+NYomf9rZGQ3rTieOnZTqecn0VqKmVbolEpRXgYLtxh9n2cDWuBv1d1HmZ2f2MQ6CaD9EJk2X8RSTEJSphy/8fZoRSGRJvLy/0GzIF2IzvxibTyNZSmhwzC3SpX00/Zgv+fvkVkcHeQHJC1ogf602rnek7dRgOCUZhxsliEpE+GKacvkhcZqIe483GPEsV/dkWVfilq65IBtR8/lJifS83NvgQIgTsSQlckya3jbs4uXgwQSd9U5nQu9GwpOd55soUI7CD4JieAUXJXVlBO2pch20WiO4Z2NcXhCgrlVqvIcYACogM3hPmqyNNMUvpij5d28YQYP7JjyhftWwC8Wfx+oceLkSzYOcF20f4ahCCG2HoOMkl/nU0SOIaXQU+ZByUN4QqnVSOu67Z+EiYo0+Ptod0Qh/1qWbAeBMFugUjC4QOxJN5hZh0BOcm0FL0aHNFe2Nd/JpMVGJhzAFP1jpe4Lp6E2wWTRSSiIq5cxoSBDS6jOI09k+7nxs/s4/grHd0NwpqxamQ7ByPmRDAOMeom/EDgbigKY1rf8oRQeppf7m+/gkpQ7FnuKY6zzG0F2ykcDCIXyMpjfIvbrPN9fSULCaCXGkb07nrJAUlEhnGG2qcUh/EBTHjUhLiextxMrYnEWTzg2vGo7RAjdtAI4zfJHxw=
+  - secure: H8VeGNYID3V9w1h9Us1sxv56Thy53RWZJlv5Zx551uTq3gEz6TXqmJ026na2Vwlj+lWowHsNV4UVIvpBNRqtR/j7BZT3bEjEi1TLkiDWvmxdDmUlQQ+/jQLZFlrz5NWSjrZO4w0dZS8H6huanYtugxJq71+d/tBIGsSyty6V34HqZLMVrlavESUyTZ33iO7arI7TznwhQH90LsLJ5AgMIjcGb8vQishC7IhY7WaxezUl7b+98X1lwbJ7fzQ7CWoysJtJac1vSHvHrO6Wwhyjq/60yXII4kgbBAwEJnN/eS2WU3u3rRu+njP8ODNGfiyecYZhrjjH/HZYTzClyKBdGQXaNvrUB7AbKoTUNtPEM+Kb4+S9BK/1e3MRnuAibZYh5tYO8DRjCVgnZAi9R1dnaFG0RgdsWv5M8wyErxMUu71o668BDWgasT1sgeR1LEUTcNbTzHxRkBDcYgyp+8DtZ0mFYS40+X10JXux8vKW3eByilTtjFBP7E2mWseQeCoS1unYN5pLFQZkfRd3Kxay9995Cw1JD0EJIEHhdDPK7OqfBxhI2uScL8zZp5Og3l9wYNKCdgL0sSjgzMXQ1pgCTHJLvU51ucNMBeV8bcy55Lx32EjNasVp+L3MMRSOvUGhHMMqCe4QGZ3Ke9EJssEp4wJH4acoAvhTazAuWJertNQ=
