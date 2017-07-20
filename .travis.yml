@@ -7,37 +7,37 @@ python:
 
 cache: pip
 install:
-  - sudo apt-get install dnsutils
+  # - sudo apt-get install dnsutils
   - pip install cloudpassage
   - pip install flake8
 script:
   # install the Halo agent
   # update apt repositories 
-  - sudo apt-get update > /dev/null
+  # - sudo apt-get update > /dev/null
   
   # install curl 
-  - sudo apt-get -y install curl
+  # - sudo apt-get -y install curl
   
   # add CloudPassage repository 
-  - echo 'deb https://production.packages.cloudpassage.com/debian debian main' | sudo tee /etc/apt/sources.list.d/cloudpassage.list > /dev/null
+  # - echo 'deb https://production.packages.cloudpassage.com/debian debian main' | sudo tee /etc/apt/sources.list.d/cloudpassage.list > /dev/null
   
   # import CloudPassage public key 
-  - curl https://production.packages.cloudpassage.com/cloudpassage.packages.key | sudo apt-key add -
+  # - curl https://production.packages.cloudpassage.com/cloudpassage.packages.key | sudo apt-key add -
   
   # update apt repositories 
-  - sudo apt-get update > /dev/null
+  # - sudo apt-get update > /dev/null
   
   # install the agent 
-  - sudo apt-get -y install cphalo
+  # - sudo apt-get -y install cphalo
   
   # configure agent key
-  - sudo /opt/cloudpassage/bin/configure --agent-key=$HALO_AGENT_KEY
+  # - sudo /opt/cloudpassage/bin/configure --agent-key=$HALO_AGENT_KEY
   
   #  start the agent for the first time 
   - sudo /etc/init.d/cphalod start
   
   # pull down Halo API wrapper class
-  - git clone https://github.com/jgibbons-cp/halo_general.git
+  # - git clone https://github.com/jgibbons-cp/halo_general.git
   
   # run style test
   - cd app/test/style/
@@ -48,17 +48,17 @@ script:
   - python test_config_helper.py
   
   # configure project
-  - sed -i -e "1,/<server_group>/s/<server_group>/UnitTest/" ../../halo_api_examples/config_helper.py
+  #- sed -i -e "1,/<server_group>/s/<server_group>/UnitTest/" ../../halo_api_examples/config_helper.py
 
-  - sed -i -e "1,/<server_group_temp>/s/<server_group_temp>/UnitTestTemp/" ../../halo_api_examples/config_helper.py
+  #- sed -i -e "1,/<server_group_temp>/s/<server_group_temp>/UnitTestTemp/" ../../halo_api_examples/config_helper.py
 
   # get build workload ip
-  - server_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
-  - sed -i -e "1,/<server_ip>/s/<server_ip>/$server_ip/" ../../halo_api_examples/config_helper.py
+  #- server_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+  #- sed -i -e "1,/<server_ip>/s/<server_ip>/$server_ip/" ../../halo_api_examples/config_helper.py
 
-  - python test_server_group_methods.py
+  #- python test_server_group_methods.py
 
-  - python test_server_methods.py
+  #- python test_server_methods.py
 
 env:
   global:
