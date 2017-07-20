@@ -26,7 +26,7 @@ class ConfigHelper():
         print self.halo_secret
         print is_int
         print scan_examples
-        
+
         if self.halo_key is None or self.halo_secret is None \
             or not os.path.exists(scan_results_directory) or not path_exists \
                 or is_int == "False" \
