@@ -7,7 +7,6 @@ install:
 - pip install cloudpassage
 - pip install flake8
 script:
-- sudo /etc/init.d/cphalod start
 - cd app/test/style/
 - python test_style_flake8.py
 - cd ../unit/
