@@ -19,13 +19,9 @@ class ConfigHelper():
         days_for_scan_age = os.environ["DAYS_FOR_SCAN_AGE"] = "0"
         scan_examples = os.environ["SCAN_EXAMPLES"] = "False"
 
-        # if self.halo_key is None or self.halo_secret is None \
-            # or not os.path.exists(scan_results_directory) \
-                # or not isinstance(days_for_scan_age, int) \
-                # or scan_examples != TRUE or scan_examples != FALSE:
-                    # sys.exit(ERROR)
+        path_exists = os.path.exists(scan_results_directory)
 
-        if not os.path.exists(scan_results_directory) \
-            or not isinstance(days_for_scan_age, int) \
-            or scan_examples != TRUE or scan_examples != FALSE:
-                sys.exit(ERROR)
+        if self.halo_key is None or self.halo_secret is None \
+            or not os.path.exists(scan_results_directory) or not path_exists \
+                or scan_examples != TRUE and scan_examples != FALSE:
+                    sys.exit(ERROR)
