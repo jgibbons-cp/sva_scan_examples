@@ -23,7 +23,7 @@ class ConfigHelper():
             try:
                 os.mkdir(scan_results_directory)
                 path_exists = os.path.exists(scan_results_directory)
-            except OSError as e:
+            except OSError:
                 pass
 
         days_for_scan_age = os.environ["DAYS_FOR_SCAN_AGE"] = "0"
