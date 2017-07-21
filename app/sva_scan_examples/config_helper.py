@@ -16,7 +16,7 @@ class ConfigHelper():
 
         # get the results directory and create it if it does not exist
         scan_results_directory = os.environ["SCAN_RESULTS_DIRECTORY"] = \
-            "/scan_results/"
+            "/tmp/scan_results/"
         path_exists = os.path.exists(scan_results_directory)
 
         if not path_exists:
@@ -24,7 +24,7 @@ class ConfigHelper():
                 os.mkdir(scan_results_directory)
                 path_exists = os.path.exists(scan_results_directory)
             except OSError as e:
-                print e.message
+                pass
 
         days_for_scan_age = os.environ["DAYS_FOR_SCAN_AGE"] = "0"
         days_for_scan_age = int(days_for_scan_age)
