@@ -49,7 +49,7 @@ class Test_SVA_ScanExamples(unittest.TestCase):
     # init class object
     sva_scan_examples_obj = sva_scan_examples.SVA_ScanExamples(halo)
 
-    # get server ID and scan results
+    # get server ID and scan results - here
     server_id = \
         sva_scan_examples_obj.get_server_id(halo, host_ip)
     scan_results = sva_scan_examples_obj.scan_server(server_id)
