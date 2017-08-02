@@ -19,7 +19,7 @@ class SVA_ScanExamples(object):
         NO_SERVERS = 0
 
         self.halo = halo
-        self.configure_scan_results_diretory()
+        self.configure_scan_results_directory()
 
         # get a server object
         self.halo_server_obj = self.halo.get_server_obj()
@@ -41,7 +41,11 @@ class SVA_ScanExamples(object):
 
             # remove
             server_ip = "54.213.249.63"  # "54.67.112.127"
-            self.halo_sva_scan_examples(server_ip, secs_since_cur_epoch)
+
+            unit_tests = os.getenv("UNIT_TESTS")
+
+            if unit_tests == "False":
+                self.halo_sva_scan_examples(server_ip, secs_since_cur_epoch)
 
     def halo_sva_scan_examples(self, server_ip, secs_since_cur_epoch):
         SCAN = "scan"
@@ -54,7 +58,7 @@ class SVA_ScanExamples(object):
         # execute scan examples as well as Qualys comparative report
         scan_examples = os.getenv("SCAN_EXAMPLES")
 
-        if scan_examples == TRUE:
+        if scan_examples == TRUE and server_id is not None:
             # scan the server
             scan_results = self.scan_server(server_id)
 
@@ -95,52 +99,54 @@ class SVA_ScanExamples(object):
 
             os.environ["SCAN_EXAMPLES"] = "False"
 
-        module = "svm"
+        if server_id is not None:
+            module = "svm"
 
-        # use scan results from x days ago
-        days_ago = os.getenv("DAYS_FOR_SCAN_AGE")
-        days_ago = int(days_ago)
-        scan_id = self.halo.get_last_scan_before_date(self.halo_scan_obj,
-                                                      server_id, module,
-                                                      days_ago)
+            # use scan results from x days ago
+            days_ago = os.getenv("DAYS_FOR_SCAN_AGE")
+            days_ago = int(days_ago)
+            scan_id = self.halo.get_last_scan_before_date(self.halo_scan_obj,
+                                                          server_id, module,
+                                                          days_ago)
 
-        NO_SCAN_IDS = 0
-        NONE = 0
+            NO_SCAN_IDS = 0
+            NONE = 0
 
-        # if there is a historical scan use it else scan.
-        # if there are issues create a report
-        if len(scan_id) != NO_SCAN_IDS:
-            critical_finds_count = scan_id["critical_findings_count"]
-            non_critical_finds_count = scan_id["non_critical_findings_count"]
+            # if there is a historical scan use it else scan.
+            # if there are issues create a report
+            if len(scan_id) != NO_SCAN_IDS:
+                critical_finds_count = scan_id["critical_findings_count"]
+                non_critical_finds_count = \
+                    scan_id["non_critical_findings_count"]
 
-            if critical_finds_count != NONE or \
-                    non_critical_finds_count != NONE:
-                scan_id = scan_id["id"]
+                if critical_finds_count != NONE or \
+                        non_critical_finds_count != NONE:
+                    scan_id = scan_id["id"]
+                    scan_details = self.get_scan_details(scan_id)
+                    self.write_qualys_comparison_report(
+                        scan_details, server_id, secs_since_cur_epoch)
+            else:
+                scan_results = self.scan_server(server_id)
+                scan_id = scan_results[SCAN][ID]
                 scan_details = self.get_scan_details(scan_id)
-                self.write_qualys_comparison_report(scan_details, server_id,
-                                                    secs_since_cur_epoch)
-        else:
-            scan_results = self.scan_server(server_id)
-            scan_id = scan_results[SCAN][ID]
-            scan_details = self.get_scan_details(scan_id)
-            critical_finds_count = scan_details["critical_findings_count"]
-            non_critical_finds_count = scan_details["non_critical_finds_count"]
+                critical_finds_count = scan_details["critical_findings_count"]
+                non_critical_finds_count = \
+                    scan_details["non_critical_finds_count"]
 
-            if critical_finds_count != NONE or \
-                    non_critical_finds_count != NONE:
-                self.write_qualys_comparison_report(scan_details, server_id,
-                                                    secs_since_cur_epoch)
+                if critical_finds_count != NONE or \
+                        non_critical_finds_count != NONE:
+                    self.write_qualys_comparison_report(
+                        scan_details, server_id, secs_since_cur_epoch)
 
     ###
     #
     #   Create a directory to store the scan results if it does not exist
     #   parameters:
-    #       cls (class) - the class
+    #       self (object)
     #
     ###
 
-    @classmethod
-    def configure_scan_results_diretory(cls):
+    def configure_scan_results_directory(self):
         scan_results_dir = os.getenv("SCAN_RESULTS_DIRECTORY")
 
         if os.path.exists(scan_results_dir) is False:
@@ -151,7 +157,7 @@ class SVA_ScanExamples(object):
     #
     #   Get the Halo ID of a server
     #   parameters:
-    #       cls (class) - the class
+    #       self (object)
     #       halo (object) - the object to access the wrapper class
     #       server_ip (str)
     #
@@ -159,8 +165,7 @@ class SVA_ScanExamples(object):
     #       server_id (str)
     ###
 
-    @classmethod
-    def get_server_id(cls, halo, server_ip):
+    def get_server_id(self, halo, server_ip):
         http_helper_obj = halo.get_http_helper_obj()
         server_id = halo.get_server_id_for_ip(http_helper_obj, server_ip)
 
@@ -179,6 +184,7 @@ class SVA_ScanExamples(object):
     ###
 
     def scan_server(self, server_id):
+        scan_results = []
         scan_type = "sva"
 
         response = self.halo.scan_server(self.halo_scan_obj, server_id,
@@ -268,6 +274,7 @@ class SVA_ScanExamples(object):
     ###
 
     def get_scan_finding(self, scan_results):
+        finding_detail = []
         SCAN = "scan"
         ID = "id"
         FINDINGS = "findings"
@@ -294,6 +301,8 @@ class SVA_ScanExamples(object):
     ###
 
     def get_scan_details(self, scan_id):
+        scan_details = []
+
         scan_details = self.halo.get_scan_details(self.halo_scan_obj,
                                                   scan_id)
 
@@ -315,6 +324,7 @@ class SVA_ScanExamples(object):
                                        secs_since_cur_epoch):
         server_data = \
             self.halo.describe_server(self.halo_server_obj, server_id)
+
         server_ip = server_data["connecting_ip_address"]
         hostname = scan_details["server_hostname"]
         print "Creating a report for IP: %s hostname: %s." % (server_ip,
@@ -740,9 +750,6 @@ class SVA_ScanExamples(object):
         total_time = finish - start
         print "Report completed in %s" % total_time
 
-        # remove
-        sys.exit()
-
     ###
     #   the time of the agent's last heartbeat
     #
@@ -783,7 +790,7 @@ class SVA_ScanExamples(object):
     #
     #   Parameters:
     #       self (obj)
-    #       cvss2_base (str) - the CVSS v2 base score for the CVE
+    #       cvss2_base (float) - the CVSS v2 base score for the CVE
     #
     #   Return:
     #
@@ -801,7 +808,7 @@ class SVA_ScanExamples(object):
         high_min = 7.0
         high_max = 10.0
 
-        if cvss2_base <= low_min and cvss2_base >= high_max:
+        if cvss2_base < low_min or cvss2_base > high_max:
             cve_qualitative_severity_ranking = "invalid"
         elif cvss2_base >= low_min and cvss2_base <= low_max:
             cve_qualitative_severity_ranking = "low"
@@ -911,7 +918,8 @@ class SVA_ScanExamples(object):
 
         for year in cve_years:
             cve_ranges_by_year[counter] = {"year": year, "low": NONE,
-                                           "medium": NONE, "high": NONE}
+                                           "medium": NONE, "high": NONE,
+                                           "invalid": NONE}
 
             counter = counter + INCREMENT
 
@@ -1002,8 +1010,11 @@ class SVA_ScanExamples(object):
         alas_feed_url = \
             "https://alas.aws.amazon.com/alas.rss"
 
-        feed_exists = os.path.exists(alas_feed)
-        older = self.file_older_than_a_day(alas_feed)
+        try:
+            feed_exists = os.path.exists(alas_feed)
+            older = self.file_older_than_a_day(alas_feed)
+        except OSError:
+            feed_exists = False
 
         if not feed_exists or older:
             urllib.urlretrieve(alas_feed_url, alas_feed)

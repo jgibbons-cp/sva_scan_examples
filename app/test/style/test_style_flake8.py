@@ -5,6 +5,7 @@ import re
 code_directory = os.path.abspath(os.path.dirname(__file__))
 lib_directory = os.path.join(code_directory, '../../sva_scan_examples/')
 base_directory = os.path.join(code_directory, '../../')
+unit_test_directory = os.path.join(code_directory, '../unit/')
 
 
 def flake8_examine(file_location):
@@ -27,7 +28,7 @@ def get_all_py_files(directory):
 class TestF8:
     def test_f8(self):
         dirs_to_test = [code_directory, lib_directory,
-                        base_directory]
+                        base_directory, unit_test_directory]
         files_to_test = []
         for d in dirs_to_test:
             files_to_test.extend(get_all_py_files(d))

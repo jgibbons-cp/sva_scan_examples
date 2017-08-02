@@ -26,14 +26,23 @@ class ConfigHelper():
             except OSError:
                 pass
 
-        days_for_scan_age = os.environ["DAYS_FOR_SCAN_AGE"] = "0"
+        days_for_scan_age = os.environ["DAYS_FOR_SCAN_AGE"] = "1"
         days_for_scan_age = int(days_for_scan_age)
-        string_is_int_value = isinstance(days_for_scan_age, int)
+        days_string_is_int_value = isinstance(days_for_scan_age, int)
 
         scan_examples = os.environ["SCAN_EXAMPLES"] = "False"
+        heartbeat_interval = os.environ["HEARTBEAT_INTERVAL"] = "60"
+        heartbeat_interval = int(heartbeat_interval)
+        hi_string_is_int_value = isinstance(heartbeat_interval, int)
+
+        server_ip = "<server_ip>"
+        os.environ["SERVER_IP"] = server_ip
 
         if self.halo_key is None or self.halo_secret is None \
             or not os.path.exists(scan_results_directory) or not path_exists \
-                or string_is_int_value == "False" \
-                or scan_examples != TRUE and scan_examples != FALSE:
+                or days_string_is_int_value == "False" \
+                or hi_string_is_int_value == "False" \
+                or scan_examples != TRUE and scan_examples != FALSE \
+                or server_ip != "server_ip":
+
                     sys.exit(ERROR)
