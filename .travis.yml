@@ -32,9 +32,9 @@ script:
 #  start the agent for the first time
 - sudo /etc/init.d/cphalod start
 
-  # get build workload ip
-  - server_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
-  - sed -i -e "1,/<server_ip>/s/<server_ip>/$server_ip/" ../../sva_scan_examples/config_helper.py
+# get build workload ip
+- server_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+- sed -i -e "1,/<server_ip>/s/<server_ip>/$server_ip/" ../../sva_scan_examples/config_helper.py
 
 - cd app/test/style/
 - python test_style_flake8.py
