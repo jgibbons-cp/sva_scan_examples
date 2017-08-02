@@ -60,6 +60,6 @@ class ConfigHelper():
                 or days_string_is_int_value == "False" \
                 or hi_string_is_int_value == "False" \
                 or scan_examples != TRUE and scan_examples != FALSE \
-                or server_ip != "server_ip":
+                or server_ip != server_ip:
 
                     sys.exit(ERROR)
