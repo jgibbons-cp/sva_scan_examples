@@ -6,6 +6,7 @@ cache: pip
 install:
 - pip install cloudpassage
 - pip install flake8
+- pip install git
 script:
 # install the Halo agent
 # update apt repositories
