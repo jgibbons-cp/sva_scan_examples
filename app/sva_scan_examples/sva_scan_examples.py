@@ -97,7 +97,7 @@ class SVA_ScanExamples(object):
             self.write_scan_report(scan_details, file_name,
                                    secs_since_cur_epoch)
 
-            os.environ["SCAN_EXAMPLES"] = "False"
+            # os.environ["SCAN_EXAMPLES"] = "False"
 
         if server_id is not None:
             module = "svm"
@@ -105,38 +105,53 @@ class SVA_ScanExamples(object):
             # use scan results from x days ago
             days_ago = os.getenv("DAYS_FOR_SCAN_AGE")
             days_ago = int(days_ago)
+
             scan_id = self.halo.get_last_scan_before_date(self.halo_scan_obj,
                                                           server_id, module,
                                                           days_ago)
 
             NO_SCAN_IDS = 0
             NONE = 0
+            FIRST = 0
 
             # if there is a historical scan use it else scan.
             # if there are issues create a report
-            if len(scan_id) != NO_SCAN_IDS:
-                critical_finds_count = scan_id["critical_findings_count"]
-                non_critical_finds_count = \
-                    scan_id["non_critical_findings_count"]
-
-                if critical_finds_count != NONE or \
-                        non_critical_finds_count != NONE:
-                    scan_id = scan_id["id"]
-                    scan_details = self.get_scan_details(scan_id)
-                    self.write_qualys_comparison_report(
-                        scan_details, server_id, secs_since_cur_epoch)
+            if len(scan_id) != NO_SCAN_IDS and scan_examples == "False":
+                # scan the server
+                self.scan_server(server_id)
             else:
-                scan_results = self.scan_server(server_id)
-                scan_id = scan_results[SCAN][ID]
-                scan_details = self.get_scan_details(scan_id)
-                critical_finds_count = scan_details["critical_findings_count"]
-                non_critical_finds_count = \
-                    scan_details["non_critical_finds_count"]
+                days_ago = 0
 
-                if critical_finds_count != NONE or \
-                        non_critical_finds_count != NONE:
-                    self.write_qualys_comparison_report(
-                        scan_details, server_id, secs_since_cur_epoch)
+            scan_ids = \
+                self.halo.get_last_scan_before_date(
+                    self.halo_scan_obj, server_id, module, days_ago)
+            scan_id = scan_ids[FIRST][ID]
+            scan_details = self.get_scan_details(scan_id)
+            critical_finds_count = scan_details["critical_findings_count"]
+            non_critical_finds_count = \
+                scan_details["non_critical_findings_count"]
+
+            if critical_finds_count != NONE or \
+                    non_critical_finds_count != NONE:
+                #scan_id = scan_id["id"]
+                #scan_details = self.get_scan_details(scan_id)
+                self.write_qualys_comparison_report(
+                    scan_details, server_id, secs_since_cur_epoch)
+            #else:
+            #    scan_results = self.scan_server(server_id)
+            #    scan_id = scan_results[SCAN][ID]
+            #    scan_details = self.get_scan_details(scan_id)
+            #    self.write_json_to_file(scan_details, "here", "111")
+            #    sys.exit()
+                #critical_finds_count = scan_details["critical_findings_count"]
+                #self.write_json_to_file(scan_details, "here.json", "111")
+                #non_critical_finds_count = \
+                #    scan_details["non_critical_finds_count"]
+
+             #   if critical_finds_count != NONE or \
+             #           non_critical_finds_count != NONE:
+             #       self.write_qualys_comparison_report(
+             #           scan_details, server_id, secs_since_cur_epoch)
 
     ###
     #
