@@ -109,7 +109,6 @@ class Test_SVA_ScanExamples(unittest.TestCase):
         non_critical_finds_count = \
             scan_details["non_critical_findings_count"]
 
-        os.listdir("/tmp/scan_results/")
         if critical_finds_count != NONE or non_critical_finds_count != NONE:
             # success if the file is created - then removed
             self.assertTrue(os.path.exists(test_file))
