@@ -52,8 +52,11 @@ class ConfigHelper():
         heartbeat_interval = int(heartbeat_interval)
         hi_string_is_int_value = isinstance(heartbeat_interval, int)
 
+        # for unit tests Travis populates the IP
         server_ip = "<server_ip>"
         os.environ["SERVER_IP"] = server_ip
+
+        os.environ["UNIT_TESTS"] = "no_unit_tests"
 
         if self.halo_key is None or self.halo_secret is None \
             or not os.path.exists(scan_results_directory) or not path_exists \

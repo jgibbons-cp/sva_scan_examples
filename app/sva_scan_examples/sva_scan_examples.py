@@ -44,7 +44,7 @@ class SVA_ScanExamples(object):
 
             unit_tests = os.getenv("UNIT_TESTS")
 
-            if unit_tests == "False":
+            if unit_tests == "no_unit_tests":
                 self.halo_sva_scan_examples(server_ip, secs_since_cur_epoch)
 
     def halo_sva_scan_examples(self, server_ip, secs_since_cur_epoch):
