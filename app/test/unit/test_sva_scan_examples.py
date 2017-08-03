@@ -76,9 +76,24 @@ class Test_SVA_ScanExamples(unittest.TestCase):
         self.sva_scan_examples_obj.halo_sva_scan_examples(self.host_ip,
                                                           test_string)
 
-        # success if the file is created - then removed
-        self.assertTrue(os.path.exists(test_file))
-        os.remove(test_file)
+        # if there is no vulnerability then can't do this test
+        SCAN = "scan"
+        ID = "id"
+        NONE = 0
+
+        # scan details
+        scan_id = self.scan_results[SCAN][ID]
+
+        scan_details = self.sva_scan_examples_obj.get_scan_details(scan_id)
+
+        critical_finds_count = scan_details["critical_findings_count"]
+        non_critical_finds_count = \
+            scan_details["non_critical_findings_count"]
+
+        if critical_finds_count != NONE or non_critical_finds_count != NONE:
+            # success if the file is created - then removed
+            self.assertTrue(os.path.exists(test_file))
+            os.remove(test_file)
 
     def test_sva_scan_examples_fake_ip(self):
         '''
