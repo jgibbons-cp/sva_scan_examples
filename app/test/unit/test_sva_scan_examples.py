@@ -23,7 +23,7 @@ try:
 except ImportError as e:
     print "Error: %s\n" % e
     sys.exit(ERROR)
-    
+
 # import modules
 here_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -109,10 +109,16 @@ class Test_SVA_ScanExamples(unittest.TestCase):
         non_critical_finds_count = \
             scan_details["non_critical_findings_count"]
 
+        os.listdir("/tmp/scan_results/")
+        print critical_finds_count
+        print non_critical_finds_count
         if critical_finds_count != NONE or non_critical_finds_count != NONE:
+            print "inside"
             # success if the file is created - then removed
             self.assertTrue(os.path.exists(test_file))
             os.remove(test_file)
+        else:
+            print "outside"
 
     def test_sva_scan_examples_fake_ip(self):
         '''
