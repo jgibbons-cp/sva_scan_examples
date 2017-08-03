@@ -89,7 +89,7 @@ class Test_SVA_ScanExamples(unittest.TestCase):
             Test sva scan examples
         '''
 
-        test_file = "./halo_sva_report_test.csv"
+        test_file = "/tmp/scan_results/halo_sva_report_test.csv"
         test_string = "test"
 
         self.sva_scan_examples_obj.halo_sva_scan_examples(self.host_ip,
@@ -110,15 +110,10 @@ class Test_SVA_ScanExamples(unittest.TestCase):
             scan_details["non_critical_findings_count"]
 
         os.listdir("/tmp/scan_results/")
-        print critical_finds_count
-        print non_critical_finds_count
         if critical_finds_count != NONE or non_critical_finds_count != NONE:
-            print "inside"
             # success if the file is created - then removed
             self.assertTrue(os.path.exists(test_file))
             os.remove(test_file)
-        else:
-            print "outside"
 
     def test_sva_scan_examples_fake_ip(self):
         '''
