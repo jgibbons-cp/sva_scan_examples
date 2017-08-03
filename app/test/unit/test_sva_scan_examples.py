@@ -221,7 +221,7 @@ class Test_SVA_ScanExamples(unittest.TestCase):
 
         time_of_last_heartbeat = \
             time.strptime(time_of_last_heartbeat,
-                          '%Y-%m-%dT%H:%M:%S.f')
+                          '%Y-%m-%dT%H:%M:%S.fZ')
 
         time_of_last_heartbeat = \
             datetime.fromtimestamp(time.mktime(time_of_last_heartbeat))
