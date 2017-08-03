@@ -357,8 +357,11 @@ class SVA_ScanExamples(object):
                                             server_data["kernel_name"],
                                             server_data["os_version"])
 
-        # get the AWS instance ID
-        instance_id = server_data["aws_ec2"]["ec2_instance_id"]
+        try:
+            # get the AWS instance ID
+            instance_id = server_data["aws_ec2"]["ec2_instance_id"]
+        except KeyError:
+            instance_id = "Not AWS"
 
         # server state (active, retired etc.)
         server_state = server_data["state"]
