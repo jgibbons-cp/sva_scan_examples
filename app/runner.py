@@ -1,4 +1,5 @@
 import sva_scan_examples
+from halo_general import HaloGeneral
 
 # Build config
 config = sva_scan_examples.ConfigHelper()

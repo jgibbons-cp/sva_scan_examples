@@ -133,25 +133,26 @@ class SVA_ScanExamples(object):
 
             if critical_finds_count != NONE or \
                     non_critical_finds_count != NONE:
-                #scan_id = scan_id["id"]
-                #scan_details = self.get_scan_details(scan_id)
+                # scan_id = scan_id["id"]
+                # scan_details = self.get_scan_details(scan_id)
                 self.write_qualys_comparison_report(
                     scan_details, server_id, secs_since_cur_epoch)
-            #else:
+            # else:
             #    scan_results = self.scan_server(server_id)
             #    scan_id = scan_results[SCAN][ID]
             #    scan_details = self.get_scan_details(scan_id)
             #    self.write_json_to_file(scan_details, "here", "111")
             #    sys.exit()
-                #critical_finds_count = scan_details["critical_findings_count"]
-                #self.write_json_to_file(scan_details, "here.json", "111")
-                #non_critical_finds_count = \
-                #    scan_details["non_critical_finds_count"]
+            # critical_finds_count =
+            # scan_details["critical_findings_count"]
+            # self.write_json_to_file(scan_details, "here.json", "111")
+            # non_critical_finds_count = \
+            #    scan_details["non_critical_finds_count"]
 
-             #   if critical_finds_count != NONE or \
-             #           non_critical_finds_count != NONE:
-             #       self.write_qualys_comparison_report(
-             #           scan_details, server_id, secs_since_cur_epoch)
+            #   if critical_finds_count != NONE or \
+            #           non_critical_finds_count != NONE:
+            #       self.write_qualys_comparison_report(
+            #           scan_details, server_id, secs_since_cur_epoch)
 
     ###
     #
