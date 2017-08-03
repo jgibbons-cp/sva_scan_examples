@@ -47,7 +47,6 @@ fp, pathname, description = imp.find_module(module_name)
 sva_scan_examples = imp.load_module(module_name, fp, pathname, description)
 
 
-
 class Test_SVA_ScanExamples(unittest.TestCase):
     '''
            Test the scan examples

@@ -1,4 +1,6 @@
 import os
+import sys
+
 
 class ConfigHelper():
     """
@@ -7,6 +9,7 @@ class ConfigHelper():
     def __init__(self):
         TRUE = "True"
         FALSE = "False"
+        ERROR = 1
 
         self.halo_key = os.getenv("HALO_API_KEY")
         self.halo_secret = os.getenv("HALO_API_SECRET_KEY")
@@ -37,7 +40,7 @@ class ConfigHelper():
         os.environ["SERVER_IP"] = server_ip
 
         os.environ["UNIT_TESTS"] = "no_unit_tests"
-        
+
         if self.halo_key is None or self.halo_secret is None \
             or not os.path.exists(scan_results_directory) or not path_exists \
                 or days_string_is_int_value == "False" \

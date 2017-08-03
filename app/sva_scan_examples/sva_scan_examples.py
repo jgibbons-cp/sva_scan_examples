@@ -102,9 +102,10 @@ class SVA_ScanExamples(object):
             days_ago = os.getenv("DAYS_FOR_SCAN_AGE")
             days_ago = int(days_ago)
 
-            scan_ids = self.halo.get_last_scan_before_date(self.halo_scan_obj,
-                                                          server_id, module,
-                                                          days_ago)
+            scan_ids = \
+                self.halo.get_last_scan_before_date(self.halo_scan_obj,
+                                                    server_id, module,
+                                                    days_ago)
 
             NO_SCAN_IDS = 0
             NONE = 0
