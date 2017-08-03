@@ -20,6 +20,7 @@ class SVA_ScanExamples(object):
 
         self.halo = halo
         self.configure_scan_results_directory()
+        self.file_path = os.getenv("SCAN_RESULTS_DIRECTORY")
 
         # get a server object
         self.halo_server_obj = self.halo.get_server_obj()
@@ -38,9 +39,6 @@ class SVA_ScanExamples(object):
         for server in servers:
             # run the examples
             server_ip = server["connecting_ip_address"]
-
-            # remove
-            server_ip = "54.213.249.63"  # "54.67.112.127"
 
             unit_tests = os.getenv("UNIT_TESTS")
 
@@ -97,8 +95,6 @@ class SVA_ScanExamples(object):
             self.write_scan_report(scan_details, file_name,
                                    secs_since_cur_epoch)
 
-            # os.environ["SCAN_EXAMPLES"] = "False"
-
         if server_id is not None:
             module = "svm"
 
@@ -106,26 +102,27 @@ class SVA_ScanExamples(object):
             days_ago = os.getenv("DAYS_FOR_SCAN_AGE")
             days_ago = int(days_ago)
 
-            scan_id = self.halo.get_last_scan_before_date(self.halo_scan_obj,
+            scan_ids = self.halo.get_last_scan_before_date(self.halo_scan_obj,
                                                           server_id, module,
                                                           days_ago)
 
             NO_SCAN_IDS = 0
             NONE = 0
             FIRST = 0
+            SCAN = "scan"
 
             # if there is a historical scan use it else scan.
             # if there are issues create a report
-            if len(scan_id) != NO_SCAN_IDS and scan_examples == "False":
+            if len(scan_ids) == NO_SCAN_IDS and scan_examples == "False":
                 # scan the server
-                self.scan_server(server_id)
+                scan_results = self.scan_server(server_id)
+                scan_id = scan_results[SCAN][ID]
             else:
-                days_ago = 0
+                scan_ids = \
+                    self.halo.get_last_scan_before_date(
+                        self.halo_scan_obj, server_id, module, days_ago)
+                scan_id = scan_ids[FIRST][ID]
 
-            scan_ids = \
-                self.halo.get_last_scan_before_date(
-                    self.halo_scan_obj, server_id, module, days_ago)
-            scan_id = scan_ids[FIRST][ID]
             scan_details = self.get_scan_details(scan_id)
             critical_finds_count = scan_details["critical_findings_count"]
             non_critical_finds_count = \
@@ -133,26 +130,8 @@ class SVA_ScanExamples(object):
 
             if critical_finds_count != NONE or \
                     non_critical_finds_count != NONE:
-                # scan_id = scan_id["id"]
-                # scan_details = self.get_scan_details(scan_id)
                 self.write_qualys_comparison_report(
                     scan_details, server_id, secs_since_cur_epoch)
-            # else:
-            #    scan_results = self.scan_server(server_id)
-            #    scan_id = scan_results[SCAN][ID]
-            #    scan_details = self.get_scan_details(scan_id)
-            #    self.write_json_to_file(scan_details, "here", "111")
-            #    sys.exit()
-            # critical_finds_count =
-            # scan_details["critical_findings_count"]
-            # self.write_json_to_file(scan_details, "here.json", "111")
-            # non_critical_finds_count = \
-            #    scan_details["non_critical_finds_count"]
-
-            #   if critical_finds_count != NONE or \
-            #           non_critical_finds_count != NONE:
-            #       self.write_qualys_comparison_report(
-            #           scan_details, server_id, secs_since_cur_epoch)
 
     ###
     #
@@ -240,13 +219,10 @@ class SVA_ScanExamples(object):
     #
     ###
 
-    @classmethod
-    def write_json_to_file(cls, json_data, file_name, secs_since_cur_epoch):
+    def write_json_to_file(self, json_data, file_name, secs_since_cur_epoch):
         indention = 4
 
-        file_path = os.getenv("SCAN_RESULTS_DIRECTORY")
-
-        file = "%s%s_%s.json" % (file_path, file_name,
+        file = "%s%s_%s.json" % (self.file_path, file_name,
                                  secs_since_cur_epoch)
         mode = "w"
 
@@ -750,8 +726,8 @@ class SVA_ScanExamples(object):
                     # open file and write header if needed
                     if paramaters_init is False:
                         mode = "a"
-                        file_name = "halo_sva_report_%s.csv" % \
-                                    secs_since_cur_epoch
+                        file_name = "%shalo_sva_report_%s.csv" % \
+                                    (self.file_path, secs_since_cur_epoch)
                         file_object = open(file_name, mode)
                         file_object.write(header)
                         paramaters_init = True

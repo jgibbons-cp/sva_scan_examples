@@ -43,7 +43,7 @@ class ConfigHelper():
             except OSError:
                 pass
 
-        days_for_scan_age = os.environ["DAYS_FOR_SCAN_AGE"] = "1"
+        days_for_scan_age = os.environ["DAYS_FOR_SCAN_AGE"] = "7"
         days_for_scan_age = int(days_for_scan_age)
         days_string_is_int_value = isinstance(days_for_scan_age, int)
 
