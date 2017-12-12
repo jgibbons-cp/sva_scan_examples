@@ -436,7 +436,6 @@ class SVA_ScanExamples(object):
                     cve_publish_date = \
                         self.get_cve_publish_date(halo_http_helper_obj, cve_id)
 
-
                     header = "%s, CVE Publish Date" \
                              % header
                     report_data = "%s, %s" % (report_data, cve_publish_date)
@@ -444,8 +443,7 @@ class SVA_ScanExamples(object):
                     # age
                     cve_age = self.get_cve_age(cve_publish_date)
 
-                    header = "%s, CVE Age" \
-                              % header
+                    header = "%s, CVE Age" % header
                     report_data = "%s, %s" % (report_data, cve_age)
 
                     # the CVSS v2 base score
