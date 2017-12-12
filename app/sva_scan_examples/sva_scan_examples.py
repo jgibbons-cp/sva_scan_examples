@@ -1,5 +1,6 @@
 import calendar
 import datetime
+from datetime import date
 import json
 from json2html import * # NOQA
 import os
@@ -28,7 +29,16 @@ class SVA_ScanExamples(object):
         # get a scan object
         self.halo_scan_obj = self.halo.get_scan_obj()
 
-        servers = self.halo.list_all_servers(self.halo_server_obj)
+        halo_server_group = os.getenv("HALO_SERVER_GROUP")
+
+        if halo_server_group == "":
+            servers = self.halo.list_all_servers(self.halo_server_obj)
+        else:
+            halo_server_group_obj = self.halo.get_server_group_obj()
+            server_group_id = \
+                self.halo.get_server_group_id_by_name(halo_server_group_obj,
+                                                      halo_server_group)
+            servers = halo_server_group_obj.list_members(server_group_id)
 
         if len(servers) == NO_SERVERS:
             print "No server to use... exiting...\n"
@@ -133,6 +143,9 @@ class SVA_ScanExamples(object):
                     non_critical_finds_count != NONE:
                 self.write_qualys_comparison_report(
                     scan_details, server_id, secs_since_cur_epoch)
+            else:
+                print "No critical or non-critical findings for %s." \
+                      "  Not writing a report.\n" % server_ip
 
     ###
     #
@@ -418,6 +431,22 @@ class SVA_ScanExamples(object):
                     header = "%s, CVE ID" \
                              % header
                     report_data = "%s, %s" % (report_data, cve_id)
+
+                    # the cve publish date
+                    cve_publish_date = \
+                        self.get_cve_publish_date(halo_http_helper_obj, cve_id)
+
+
+                    header = "%s, CVE Publish Date" \
+                             % header
+                    report_data = "%s, %s" % (report_data, cve_publish_date)
+
+                    # age
+                    cve_age = self.get_cve_age(cve_publish_date)
+
+                    header = "%s, CVE Age" \
+                              % header
+                    report_data = "%s, %s" % (report_data, cve_age)
 
                     # the CVSS v2 base score
                     cvss2_base_score = cve_entry["cvss_score"]
@@ -1014,3 +1043,75 @@ class SVA_ScanExamples(object):
 
         if not feed_exists or older:
             urllib.urlretrieve(alas_feed_url, alas_feed)
+
+    ###
+    #   Get the cve publish date
+    #
+    #   Parameters:
+    #       self (obj)
+    #       halo_http_helper_obj (obj)
+    #       cve_id (str)
+    #
+    #   Return:
+    #       results["published"] (str)
+    ###
+
+    def get_cve_publish_date(self, halo_http_helper_obj, cve_id):
+        endpoint_url = "/v1/cve_details/%s" % cve_id
+
+        results = halo_http_helper_obj.get(endpoint_url)
+
+        return results["published"]
+
+    ###############
+    # Get the age of the cve in days
+    #
+    #   Parameters:
+    #       self (obj)
+    #       cve_publish_date (str)
+    #
+    #   Return:
+    #       cve_age (int)
+    ###############
+
+    def get_cve_age(self, cve_publish_date):
+        # format for date()
+        begin_index = 0
+        end_index = 4
+        publish_year = cve_publish_date[begin_index:end_index]
+        publish_year = int(publish_year)
+
+        begin_index = 5
+        end_index = 7
+        publish_month = cve_publish_date[begin_index:end_index]
+        publish_month = int(publish_month)
+
+        begin_index = 8
+        end_index = 10
+        publish_day = cve_publish_date[begin_index:end_index]
+        publish_day = int(publish_day)
+
+        # get today's date
+        current_date = date.today().strftime("%Y%m%d")
+
+        # format for date()
+        begin_index = 0
+        end_index = 4
+        current_year = current_date[begin_index:end_index]
+        current_year = int(current_year)
+
+        begin_index = 4
+        end_index = 6
+        current_month = current_date[begin_index:end_index]
+        current_month = int(current_month)
+
+        begin_index = 6
+        end_index = 8
+        current_day = current_date[begin_index:end_index]
+        current_day = int(current_day)
+
+        # calculate age
+        release_age = (date(current_year, current_month, current_day) -
+                       date(publish_year, publish_month, publish_day)).days
+
+        return release_age

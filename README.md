@@ -36,10 +36,12 @@ app/sva_scan_examples/config_helper.py stores the configuration for the project.
 1) SCAN_RESULTS_DIRECTORY: an environment variable that controls where the scan results are stored.
   The default is /tmp/scan_results/  
 2) DAYS_FOR_SCAN_AGE: use scan results from n days ago  
-3) SCAN_EXAMPLES: whether to run the basic examples or only the Qualys comparison report  
-4) HEARTBEAT_INTERVAL: Halo agent's heartbeat interval
-5) SERVER_IP: for unit testing  
-6) UNIT_TESTS: whether unit tests are executing or not
+3) HALO_SERVER_GROUP: Populate with a Halo server group to scan only servers
+in that group  
+4) SCAN_EXAMPLES: whether to run the basic examples or only the Qualys comparison report  
+5) HEARTBEAT_INTERVAL: Halo agent's heartbeat interval
+6) SERVER_IP: for unit testing  
+7) UNIT_TESTS: whether unit tests are executing or not
 
 Project Execution
 -----------------
@@ -51,8 +53,10 @@ Sample output:
 $ python app/runner.py  
 Command status is queued... waiting for next heartbeat...  
 Command status is pending... waiting for next heartbeat...  
-Creating a report for IP: 54.213.249.63 hostname: ip-10-10-12-239.  
+Creating a report for IP: 54.xxx.xxx.63 hostname: ip-10-10-12-239.  
 Report completed in 0:00:30.967185  
+
+No critical or non-critical findings for 54.xxx.xxx.174.  Not writing a report.
 
 Sample Output
 -
